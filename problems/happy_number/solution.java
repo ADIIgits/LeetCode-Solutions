@@ -1,40 +1,23 @@
 class Solution {
-    class comp{
-        static boolean in(int sum,int[] sumarr,int k)
-        {
-            for(int i=0;i<k;i++)
-            {
-                if(sumarr[i]==sum)
-                return true;
-            }
-            return false;
-        }
-    }
+    ArrayList<Integer> sumarr = new ArrayList<>();
     public boolean isHappy(int n) {
-        int sum = 0;
-        // int[] sumarr = new int[100];
-        HashSet<Integer> sumarr = new HashSet<>();
-        int k=0;
-        while(sum!=1)
-        {
-            for(int i=n;i>0;i=i/10)
-            {
-                int d = i%10;
-                sum+=d*d;
-            }
-            if(sum==1)
-            return true;
-
-            if(sumarr.contains(sum))
-            break;
-            else
-            sumarr.add(sum);
-            // sumarr[k++]=sum;
-
-            n=sum;
-            sum=0;
-
+        int num=n; int sum=0;
+        
+        while(num>0){
+            int d = num%10;
+            sum+=Math.pow(d,2);
+            num=num/10;
         }
-        return false;
+        if(sum==1)
+        return true;
+        else{
+            if(sumarr.contains(sum))
+            return false;
+            else{
+            sumarr.add(sum);
+            return isHappy(sum);}
+        }
+
+        
     }
 }
