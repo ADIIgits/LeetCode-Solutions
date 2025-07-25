@@ -1,9 +1,9 @@
 class Solution {
     public int singleNumber(int[] nums) {
-        int n=nums.length; int el=0;
-        for(int i=0;i<n;i++){
-            el^=nums[i];
+        int sumor = 0;
+        for(int el:nums){
+            sumor^=el;
         }
-        return el;
+        return sumor;
     }
 }
