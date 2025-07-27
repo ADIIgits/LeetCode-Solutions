@@ -1,17 +1,17 @@
 class Solution {
     public int[] productExceptSelf(int[] nums) {
-        int p = 1; int q=1; int n = nums.length;
-        int[] newarr = new int[n];
+        int n = nums.length;
+        int[] suffix = new int[n];
+        int prodp = 1; int prods = 1;
         for(int i=0;i<n;i++){
-             newarr[n-i-1] = q;
-             q*=nums[n-i-1];
+            suffix[n-i-1] = prods;
+            prods*=nums[n-i-1];
         }
-        
         for(int i=0;i<n;i++){
-            newarr[i]*=p;
-            p*=nums[i];
+            suffix[i] = prodp*suffix[i];
+            prodp*=nums[i];
+            
         }
-        return newarr;
-
+        return suffix;
     }
 }
