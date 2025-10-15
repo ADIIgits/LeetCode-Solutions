@@ -1,26 +1,31 @@
 class Solution {
-    public static String reverse(String word){
-        String revword = "";
-        for(int i=word.length()-1;i>=0;i--){
-            revword+=word.charAt(i)+"";
+    public static String reverse(String s){
+        int n = s.length();
+        String newstr="";
+        for(int i=0;i<n;i++){
+            newstr+=s.charAt(n-i-1);
         }
-        return revword;
+        return newstr;
     }
     public String reverseWords(String s) {
-        int slen = s.length();
-        s=reverse(s);
-        String ans = "";
-        for(int i=0;i<slen;i++){
-            String word = "";
-            while(i<slen && s.charAt(i)!=' '){
-                word+=s.charAt(i)+"";
-                i++;
+        int n = s.length();
+        String revstr = reverse(s);
+        String anstr="";
+
+        for(int i=0;i<n;){
+            int j=i;
+            while(j<n && Character.isLetterOrDigit(revstr.charAt(j))) j++;
+            if(j>i){
+                String revword = reverse(revstr.substring(i,j));
+                anstr+=" "+revword;
+                i=j;
+                continue;
             }
-            word = reverse(word);
-            if(word.length()>0)
-            ans+=" "+word;
+            i++;
         }
-        return ans.substring(1,ans.length());
+
         
+
+        return anstr.substring(1);
     }
 }
