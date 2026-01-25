@@ -4,15 +4,14 @@ public:
         int n = matrix.size();
         for(int i=0;i<n;i++){
             for(int j=0;j<n;j++){
-                if(i<=j) swap(matrix[i][j],matrix[j][i]);
+                if(i<j) swap(matrix[j][i] , matrix[i][j]);
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n/2;j++){
+                swap(matrix[i][j],matrix[i][n-j-1]);
             }
         }
 
-        for(int i=0;i<n;i++){
-            reverse(matrix[i].begin(),matrix[i].end());
-            // for(int j=0;j<n/2;j++){
-            //     swap(matrix[i][j],matrix[n-i-1][n-j-1]);
-            // }
-        }
     }
 };
