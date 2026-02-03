@@ -19,46 +19,43 @@ class Solution {
         return slow;
     }
     ListNode* merge(ListNode* left,ListNode* right){
-        ListNode* sorted=NULL;
-
+        ListNode* sorted = NULL;
         if(left->val < right->val){
-             sorted = left;
-             left = left->next;
+            sorted = left;
+            left = left->next;
         }
         else {
             sorted = right;
             right = right->next;
         }
 
-        ListNode* sorthead = sorted;
-
+        ListNode* sortedhead = sorted;
         while(left!=NULL && right!=NULL){
-            
-            if(left->val < right->val){
-                 sorted->next = left;
-                 left = left->next;
+            int leftval = left->val;
+            int rightval = right->val;
+            if(leftval < rightval){
+                sorted->next = new ListNode(leftval,NULL);
+                sorted=sorted->next;
+                left=left->next;
+            } else {
+                sorted->next = new ListNode(rightval,NULL);
+                sorted=sorted->next;
+                right=right->next;
             }
-            else {
-                sorted->next = right;
-                right = right->next;
-            }
-
-            sorted = sorted->next;
-
-            
         }
         while(left!=NULL){
-            sorted->next = left;
-            left = left->next;
-            sorted = sorted->next;
+            int leftval = left->val;
+            sorted->next = new ListNode(leftval,NULL);
+            sorted=sorted->next;
+            left=left->next;
         }
         while(right!=NULL){
-            sorted->next = right;
-            right = right->next;
-            sorted = sorted->next;
+            int rightval = right->val;
+            sorted->next = new ListNode(rightval,NULL);
+            sorted=sorted->next;
+            right=right->next;
         }
-        return sorthead;
-
+        return sortedhead;
 
     }
     ListNode* sot(ListNode* head){
@@ -69,8 +66,8 @@ class Solution {
         right = sot(right);
         mid->next=NULL;
         left = sot(left);
-        ListNode* res = merge(left,right);
-        return res;
+        ListNode* merged = merge(left,right);
+        return merged;
     }
 public:
     ListNode* sortList(ListNode* head) {
