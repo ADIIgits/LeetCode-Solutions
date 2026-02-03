@@ -1,17 +1,17 @@
 class Solution {
-    void generate(vector<string> &ans,string s,int left,int right,int n){
-        if(s.length()==n*2){
+    void generate(int n,vector<string> &ans,string s,int open, int closed){
+        if(s.length()==2*n){
             ans.push_back(s);
             return;
         }
-        if(left<n) generate(ans,s+"(",left+1,right,n);
-        if(right<left) generate(ans,s+")",left,right+1,n);
-        
+        if(open<n) generate(n,ans,s+"(",open+1,closed);
+        if(closed<open) generate(n,ans,s+")",open,closed+1);
     }
 public:
     vector<string> generateParenthesis(int n) {
+        string s;
         vector<string> ans;
-        generate(ans,"",0,0,n);
+        generate(n,ans,s,0,0);
         return ans;
     }
 };
