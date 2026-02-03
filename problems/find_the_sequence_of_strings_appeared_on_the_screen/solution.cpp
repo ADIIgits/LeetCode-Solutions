@@ -1,23 +1,20 @@
 class Solution {
-    void generate(string target, vector<string> &ans,string &str,int i){
-        int n = target.length();
-        if(i==n){
-            return;
+    void type(vector<string> &ans,string s,string target,int i){
+        if(s==target) return;
+        s.push_back('a');
+        ans.push_back(s);
+        while(s[i]!=target[i]){
+            s[i]++;
+            ans.push_back(s);
         }
+        type(ans,s,target,i+1);
 
-        str.push_back('a');
-        ans.push_back(str);
-        while(str[i]!=target[i]){
-            str[i]++;
-            ans.push_back(str);
-        }
-        generate(target,ans,str,i+1);
     }
+
 public:
     vector<string> stringSequence(string target) {
         vector<string> ans;
-        string str;
-        generate(target,ans,str,0);
+        type(ans,"",target,0);
         return ans;
     }
 };
