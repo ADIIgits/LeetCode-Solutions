@@ -9,43 +9,34 @@
  * };
  */
 class Solution {
-    // ListNode* lastlink = NULL;
-    // ListNode* prevklink =   NULL;
-    // ListNode* globalhead = NULL;
     ListNode* reverse(ListNode* head){
-        if(head==NULL) return head;
         ListNode* curr = head;
         ListNode* prev = NULL;
         ListNode* next = NULL;
         while(curr!=NULL){
             next = curr->next;
             curr->next = prev;
-            prev = curr;
+            prev=curr;
             curr=next;
         }
         return prev;
     }
-    ListNode* reverseknodes(ListNode* head, int k){
-        if(head==NULL) return NULL; //or head->next==null as well?
-        ListNode* temp = head;
-        int count=1;
-        while(count<k){
-            if(temp->next==NULL) return head;
-            temp = temp->next; 
-            count++;
-        }
-        
-        
-        ListNode* nextgroupStart = NULL;
-        nextgroupStart = temp->next;
-        temp->next=NULL; 
-        ListNode* reversed = reverse(head);
-        head->next=reverseknodes(nextgroupStart,k);
-        return reversed;
-    }
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        
-        return reverseknodes(head,k);
+        if(head==NULL || head->next==NULL) return head;
+        ListNode* kthstart = head;
+        ListNode* kthlast = head;
+        int i=1;
+        while(kthlast->next!=NULL && i<k){
+            kthlast=kthlast->next;
+            i++;
+        }
+        if(i<k) return head;
+
+        ListNode* nextkhead = kthlast->next;
+        kthlast->next = NULL;
+        ListNode* revhead = reverse(kthstart);
+        kthstart->next = reverseKGroup(nextkhead,k);
+        return revhead;
     }
 };
