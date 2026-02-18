@@ -10,21 +10,22 @@
  * };
  */
 class Solution {
-    void checksum(TreeNode* root,vector<vector<int>> &ans, vector<int> vec,int tsum,int sum){
+    void check(TreeNode* root,vector<vector<int>> &paths,vector<int> &vec,int sum,int tsum){
         if(root==NULL) return;
-        if(root->left==NULL  && root->right==NULL){
-            vec.push_back(root->val);
-            if(tsum==sum+root->val) ans.push_back(vec);
-        }
+        sum+=root->val;
         vec.push_back(root->val);
-        if(root->left) checksum(root->left,ans,vec,tsum,sum+root->val);
-        if(root->right) checksum(root->right,ans,vec,tsum,sum+root->val);
+        if(root->left==NULL && root->right==NULL){
+            if(sum==tsum) paths.push_back(vec);
+        }
+        check(root->left,paths,vec,sum,tsum);
+        check(root->right,paths,vec,sum,tsum);
+        vec.pop_back();
     }
 public:
     vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
-        vector<vector<int>> ans;
+        vector<vector<int>> paths;
         vector<int> vec;
-        checksum(root,ans,vec,targetSum,0);
-        return ans;
+        check(root,paths,vec,0,targetSum);
+        return paths;
     }
 };
