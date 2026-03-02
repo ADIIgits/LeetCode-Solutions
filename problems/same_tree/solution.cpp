@@ -10,12 +10,18 @@
  * };
  */
 class Solution {
+    bool issame(TreeNode* p, TreeNode* q){
+        if(p==NULL && q==NULL) return true; //both reached leaf nodes safely.
+        if(p && q==NULL) return false;
+        if(p==NULL && q) return false;
+        if(p && q==NULL) return false;
+        if(p==NULL && q) return false;
+        if(p->val!=q->val) return false;
+        return p->val==q->val && issame(p->left,q->left) && issame(p->right,q->right);
+        
+    }
 public:
     bool isSameTree(TreeNode* p, TreeNode* q) {
-        if(p==NULL && q==NULL) return true;
-        if(p==NULL && q!=NULL) return false;
-        if(p!=NULL && q==NULL) return false;
-        if(p->val != q->val) return false;
-        return isSameTree(p->left,q->left) && isSameTree(p->right,q->right);
+        return issame(p,q);
     }
 };
