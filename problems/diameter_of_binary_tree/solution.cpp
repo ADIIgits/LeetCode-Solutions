@@ -14,15 +14,14 @@ class Solution {
     int maxheight(TreeNode* root){
         if(root==NULL) return 0;
         if(root->left==NULL && root->right==NULL) return 1;
-        int left = maxheight(root->left);
-        int right =  maxheight(root->right);
-        diameter = max(diameter,left+right);
-        return 1 + max(left,right);
+        int leftheight = maxheight(root->left);
+        int rightheight = maxheight(root->right);
+        diameter = max(diameter,leftheight+rightheight);
+        return 1 + max(leftheight,rightheight);
     }
 public:
     int diameterOfBinaryTree(TreeNode* root) {
-        //diameter = maxheight(left) + maxheight(right)
-        cout<<maxheight(root);
+        maxheight(root);
         return diameter;
     }
 };
