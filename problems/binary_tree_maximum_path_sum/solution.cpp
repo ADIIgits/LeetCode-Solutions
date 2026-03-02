@@ -10,22 +10,20 @@
  * };
  */
 class Solution {
-    int maxsum = INT_MIN;
-    int maxpathsum(TreeNode* root){
+    int maxpathsum = INT_MIN;
+    int pathsum(TreeNode* root){
         if(root==NULL) return 0;
-        int left = max(0,maxpathsum(root->left));
-        int right = max(0,maxpathsum(root->right));
-
-        
-        maxsum = max(maxsum,root->val+left+right);
-        return root->val + max(left,right);
+        // if(root->left==NULL && root->right==NULL) return root->val;
+        int leftsum = pathsum(root->left);
+        int rightsum = pathsum(root->right);
+        if(leftsum<0) leftsum=0; if(rightsum<0) rightsum=0;
+        int sum = leftsum+rightsum+root->val;
+        maxpathsum = max(maxpathsum,sum);
+        return max(leftsum+root->val,rightsum+root->val);
     }
 public:
     int maxPathSum(TreeNode* root) {
-        // maxsum = max(maxsum, currval + leftsum+rightsum)
-        if(root==NULL) return 0;
-        if(root->left==NULL && root->right==NULL) return root->val;
-        maxpathsum(root);
-        return maxsum;
+        pathsum(root);
+        return maxpathsum;
     }
 };
