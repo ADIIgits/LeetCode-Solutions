@@ -1,47 +1,73 @@
-class Solution {
-    void bfs(vector<vector<char>>& grid,vector<vector<bool>>& visited,int row,int col){
-        int m = grid.size(); int n = grid[0].size();
-        queue<pair<int,int>> que;
-        que.push({row,col});
-        visited[row][col]=true;
-        while(!que.empty()){
-            auto [r,c] = que.front();
-            que.pop();
-            //right;
-            if(c<n-1 && !visited[r][c+1] && grid[r][c+1]=='1'){
-                visited[r][c+1]=true;
-                que.push({r,c+1});
-            }
-            //left;
-            if(c>0 && !visited[r][c-1] && grid[r][c-1]=='1'){
-                visited[r][c-1]=true;
-                que.push({r,c-1});
-            }
-            //up;
-            if(r>0 && !visited[r-1][c] && grid[r-1][c]=='1'){
-                visited[r-1][c]=true;
-                que.push({r-1,c});
-            }
-            //down;
-            if(r<m-1 && !visited[r+1][c] && grid[r+1][c]=='1'){
-                visited[r+1][c]=true;
-                que.push({r+1,c});
-            }
+class DSU{
+    public:
+    vector<int> parent;
+    vector<int> size;
+    DSU(int n){
+        parent.resize(n);
+        size.resize(n);
+        for(int i=0;i<n;i++){
+            parent[i]=i;
+            size[i]=1;
         }
     }
+    int find(int v){
+        if(parent[v]==v) return v;
+        return parent[v] = find(parent[v]);
+    }
+    void unite(int a, int b){
+        a = find(a);
+        b = find(b);
+
+        if(a!=b){
+            if(size[a] < size[b])
+                swap(a,b);
+            parent[b] = a;
+            size[a] += size[b];
+        }
+    }
+};
+class Solution {
 public:
     int numIslands(vector<vector<char>>& grid) {
-        int m = grid.size(); int n = grid[0].size();
-        int island = 0;
-        vector<vector<bool>> visited(m,vector<bool>(n));
+        //loop over all nodes, for every node, that is and island, we check its 4 directions, if they have another island, we merge em using dsu. then at the end we loop over all nodes and count independent connected components.(find(i)==i)
+        int m = grid.size(); //no of rows;
+        int n = grid[0].size(); //no of cols;
+        
+        int N = n*m;
+        DSU dsu(N);
+        auto node = [](int i, int j,int n){
+            return i*n + j; //this will get us the node number
+        };
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(!visited[i][j] && grid[i][j]=='1'){
-                    bfs(grid,visited,i,j);
-                    island++;
+                if(grid[i][j]=='0') continue;
+                //right
+                if(j<n-1 && grid[i][j+1]=='1'){
+                    dsu.unite(node(i,j,n),node(i,j+1,n));
+                } 
+                //left
+                if(j>0 && grid[i][j-1]=='1'){
+                    dsu.unite(node(i,j,n),node(i,j-1,n));
+                } 
+                //top
+                if(i>0 && grid[i-1][j]=='1'){
+                    dsu.unite(node(i,j,n),node(i-1,j,n));
+                } 
+                //bottom
+                if(i<m-1 && grid[i+1][j]=='1'){
+                    dsu.unite(node(i,j,n),node(i+1,j,n));
                 }
+
             }
         }
-        return island;
+        int count=0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]=='0') continue;
+                if(dsu.find(node(i,j,n))==node(i,j,n)) count++;
+            }
+        }
+        return count;
+
     }
 };
