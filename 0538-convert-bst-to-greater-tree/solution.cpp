@@ -10,18 +10,19 @@
  * };
  */
 class Solution {
-    void save(TreeNode* root,vector<TreeNode*> &vec){
-        if(root==NULL) return;
-        if(root->right) save(root->right,vec);
-        vec.push_back(root);
-        if(root->left) save(root->left,vec);
-    }
 public:
+    void capture(TreeNode* root,vector<TreeNode*> &nodes){
+        if(root==NULL) return;
+        capture(root->left,nodes);
+        nodes.push_back(root);
+        capture(root->right,nodes);
+    }
     TreeNode* convertBST(TreeNode* root) {
-        vector<TreeNode*> vec;
-        save(root,vec);
-        int sum=0;
-        for(TreeNode* node:vec){
+        vector<TreeNode*> nodes;
+        capture(root,nodes);
+        int sum = 0; int n = nodes.size();
+        for(int i=n-1;i>=0;i--){
+            TreeNode* node = nodes[i];
             sum+=node->val;
             node->val = sum;
         }
