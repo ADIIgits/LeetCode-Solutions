@@ -11,18 +11,19 @@
  */
 class Solution {
 public:
-    int height(TreeNode* root,bool &balanced){
+    int maxdepth(TreeNode* root,bool &isbalanced){
         if(root==NULL) return 0;
-        int hl = height(root->left,balanced);
-        int hr = height(root->right,balanced);
-        if(abs(hl - hr) > 1 && balanced){
-            balanced = false;
+        int left = maxdepth(root->left,isbalanced);
+        int right = maxdepth(root->right,isbalanced);
+        if(abs(left-right) > 1 && isbalanced){
+            isbalanced = false;
+            return 0; //we just wanna return, we dont care calc happens now, cux it aint balanced !!
         }
-        return 1 + max(hl,hr);
+        return 1 + max(left,right);
     }
     bool isBalanced(TreeNode* root) {
-        bool balanced = true;
-        height(root,balanced);
-        return balanced;
+        bool isbalanced = true;
+        maxdepth(root,isbalanced);
+        return isbalanced;
     }
 };
